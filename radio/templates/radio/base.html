@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Radio{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'radio/css/style.css' %}">
+    {% block extrastyle %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block sidebar %}
+        <aside>
+            <h2 class="logo"><a href="/">RADIOUS</a></h2>
+            {% block sidebar_content %}
+    
+            <form id="SearchBox">
+                <input type="text" name="search" form="SearchForm" formaction="submit" id="SearchInput" {% if request.GET.search %} value="{{ request.GET.search }}" {% endif %}>
+                <input type="submit" class="material-symbols-outlined" value="search" />
+            </form>
+            <ul class="nav">
+                <li class="nav-item"><a href="{% url 'radio:radio-list' %}">Радио</a></li>
+                <li class="nav-item"><a href="{% url 'radio:ganre-list' %}">Жанры</a></li>
+                <li class="nav-item"><a href="{% url 'radio:favorite-list' %}">Избранное</a></li>
+            </ul>
+            {% endblock %}
+        </aside>
+        {% endblock %}
+        <div class="right">
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
+            {% block footer %}
+            <footer>
+    
+            </footer>
+            {% endblock %}
+        </div>
+    
+        
+        {% load static %}
+        <script src="{% static 'radio/js/index.js' %}" type="module"></script>
+        {% block extrascript %}
+        {% endblock %}
+    </div>
+</body>
+</html>

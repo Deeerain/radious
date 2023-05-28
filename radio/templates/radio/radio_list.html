@@ -1,0 +1,20 @@
+{% extends 'radio/base.html' %}
+
+{% block content %}
+<div>
+    <h1>Онлайн радио</h1>
+    <p>Слушайте радио онлайн в хорошем качестве, онлайн и без редистрации</p>
+    {% for item in object_list %}
+    <div class="radio-list">
+        <div class="radio-list__item">
+            
+            {% load static %}
+            <img src="{% if item.preview %}{{ item.preview.url }}{% else %}/media/previews/default.png{% endif %}" width="75" height="75">
+            
+            <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+            <button id="AddFavoriteButton" class="material-symbols-outlined" data-id="{{ item.pk }}">favorite</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
