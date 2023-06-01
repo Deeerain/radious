@@ -3,7 +3,13 @@
 
 {% block content %}
 {% load radio %}
-<section class="block">
-{% draw_newest_radio %}
-</section>
+<div class="list">
+    <div class="list-item list list-horizontal">
+        {% include 'radio/inc_radio_list.html' with list_title='Новинки' object_list=object_list|newest %}
+    </div>
+
+    <div class="list-item list list-horizontal">
+        {% include 'radio/inc_radio_list.html' with list_title='Популярные радиостанции' object_list=object_list|popular:10 %}
+    </div>
+</div>
 {% endblock %}

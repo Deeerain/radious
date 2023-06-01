@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -26,8 +27,10 @@ class Radio(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     created = models.DateField('Время создания', auto_now_add=True)
     visible = models.BooleanField('Видимость', default=True)
-    preview = models.ImageField('Превью', upload_to='previews/', null=True,
-                                blank=True)
+    preview = models\
+        .ImageField('Превью', upload_to='previews/', null=True,
+                    blank=True,
+                    default=f'/{settings.MEDIA_URL}/previews/default.png')
 
     class Meta:
         verbose_name = 'Радио'

@@ -1,15 +1,21 @@
-from django import template
+from datetime import timedelta
 
-from radio.models import Radio
+from django.utils import timezone
+from django import template
+from django.db.models import QuerySet
 
 
 register = template.Library()
 
 
-@register.inclusion_tag('radio/newest_radio_list.html')
-def draw_newest_radio(count=4):
-    queryset = Radio.objects.filter(visible=True).order_by('created')[:count]
+@register.filter(name='newest')
+def newest_filter(queryset: QuerySet, count: int = 5):
+    now = timezone.now()
 
-    return {
-        'object_list': queryset
-    }
+    return queryset\
+        .filter(created__gte=(now - timedelta(days=7)).date())[:count]
+
+
+@register.filter(name='popular')
+def popular_filter(queryset: QuerySet, count: int = 5):
+    return queryset.filter(rating=5)

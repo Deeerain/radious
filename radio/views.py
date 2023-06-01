@@ -1,9 +1,7 @@
-import json
-
 from typing import Any, Dict
 from django.db.models.query import QuerySet
 from django.db.models import Q, Avg
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView
 
 from .models import Radio, Ganre
 from .forms import FeedbackForm
@@ -31,8 +29,14 @@ class SearchMixin:
         return super().get_queryset().filter(f)
 
 
-class HomeView(TemplateView):
+class HomeView(ListView):
     template_name = 'radio/home.html'
+    model = Radio
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return super().get_queryset()\
+            .prefetch_related('feedbacks')\
+            .annotate(rating=Avg('feedbacks__rating'))
 
 
 class RadioListView(SearchMixin, ListView):

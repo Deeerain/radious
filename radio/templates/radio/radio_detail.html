@@ -1,27 +1,29 @@
 {% extends 'radio/base.html' %}
 
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'radio/css/player/style.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<div id="RadioPlayer" class="radio" data-stream="{{ object.stream_url }}">
-    <div class="radio__previev">
-        {% if object.preview %}
-        <img src="{% if object.preview %}{{ object.preview.url }}{% else %}/media/previews/default.png{% endif %}" width="175" height="175"/>
-        {% endif %}
-    </div>
-    <div class="radio__meta">
+<div class="radio-station">
+    <img src="{{ object.preview.url }}" width="175" height="175">
+
+    <div class="radio-station__content">
+        <small>
+            <span>Оценка: {{ object.rating }}</span>
+            <span><a href="#Feedbacks">Отзывы: {{ object.feedbacks.count }}</a></span>
+        </small>
         <h2>{{ object.name }}</h2>
-        <ul class="radio-ganre-list">
-            {% for ganre in object.ganre.all %}
-            <li><a href="{{ ganre.get_absolute_url }}">{{ ganre.name }}</a></li>
+        <ul class="list">
+            {% for item in object.ganre.all %}
+            <li class="list-item ganre"><a href="{% url 'radio:ganre-detail' slug=item.slug %}">{{ item.name }}</a></li>
             {% endfor %}
         </ul>
-        <a href="#Feedbacks"><small>Отзывы: {{ object.feedbacks.count }}</small></a>
     </div>
-    <div class="radio__controls">
-        <button id="PlayControl" class="material-symbols-outlined">play_arrow</button>
-        <button id="PauseControl" class="material-symbols-outlined">pause</button>
-        <input type="range" id="VolumeControl" min="0" step="0.1" max="1">
-    </div>
+
+    <div id="RadioPlayer" class="player" data-stream="{{ object.stream_url }}"></div>
 </div>
 
 <div id="Feedbacks">
@@ -40,20 +42,17 @@
         </div>
     </div>
 
-    <div class="feedback-list">
+    <div class="list">
         {% for item in object.feedbacks.all %}
-        <div class="feedback-list__item">
-            <h4>{{ item.username }}</h4>
-            <small>{{ item.rating }}</small>
-            <div>{{ item.message }}</div>
+        <div class="list-item feedback">
+            <div>
+                <h4>{{ item.username }}</h4>
+                <small>Оценка: {{ item.rating }}</small>
+            </div>
+            <p>{{ item.message }}</p>
         </div>
         {% endfor %}
     </div>
 </div>
 
-{% endblock %}
-
-{% block extrascript %}
-{% load static %}
-<script src="{% static 'radio/js/player.js' %}"></script>
 {% endblock %}

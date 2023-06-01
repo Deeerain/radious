@@ -1,0 +1,11 @@
+<div class="list">
+    <h2>{{ list_title }}</h2>
+    <div class="list list-horizontal">
+        {% for item in object_list %}
+        <div class="list-item radio-station-block">
+            <img src="{{ item.preview.url }}" width="100" height="100">
+            <a href="{% url 'radio:radio-detail' slug=item.slug %}">{{ item.name }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

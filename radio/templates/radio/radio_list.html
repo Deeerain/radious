@@ -4,17 +4,17 @@
 <div>
     <h1>Онлайн радио</h1>
     <p>Слушайте радио онлайн в хорошем качестве, онлайн и без редистрации</p>
-    {% for item in object_list %}
-    <div class="radio-list">
-        <div class="radio-list__item">
+    <div class="list">
+        {% for item in object_list %}
+        <div class="list-item radio-station">
             
             {% load static %}
-            <img src="{% if item.preview %}{{ item.preview.url }}{% else %}/media/previews/default.png{% endif %}" width="75" height="75">
+            <img src="{{ item.preview.url }}" width="75" height="75">
             
             <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
             <button id="AddFavoriteButton" class="material-symbols-outlined" data-id="{{ item.pk }}">favorite</button>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

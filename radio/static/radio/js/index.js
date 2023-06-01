@@ -1,7 +1,10 @@
+import Player from "./player/player.js"
+
 const togglers = document.querySelectorAll('.toggler')
 const favorite_buttons = document.querySelectorAll('#AddFavoriteButton')
 
-
+const rp = new Player(document.querySelector('#RadioPlayer'))
+    .init()
 
 for (let toggler of togglers) {
     toggler.addEventListener('click', (e) => {
