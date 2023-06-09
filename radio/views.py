@@ -1,10 +1,13 @@
 from typing import Any, Dict
+from django.shortcuts import redirect
 from django.db.models.query import QuerySet
 from django.db.models import Q, Avg
-from django.views.generic import ListView, DetailView
+from django.http import HttpResponse
+from django.views.generic.edit import ModelFormMixin, ProcessFormView
+from django.views.generic import ListView, DetailView, FormView
 
-from .models import Radio, Ganre
-from .forms import FeedbackForm
+from radio.models import Radio, Ganre, Feedback
+from radio.forms import FeedbackForm
 
 
 class SearchMixin:
@@ -67,18 +70,29 @@ class RadioListByFavorite(RadioListView):
         return super().get_queryset().filter(pk__in=favorites)
 
 
-class RadioDetailView(DetailView):
+class RadioDetailView(DetailView, ModelFormMixin):
     model = Radio
+    form_class = FeedbackForm
+    success_url = "/"
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        radio = self.get_object()
+        form.radio = radio.pk
+        return super().form_valid(form)
 
     def get_queryset(self) -> QuerySet[Any]:
         return super().get_queryset()\
             .prefetch_related('feedbacks')\
             .annotate(rating=Avg('feedbacks__rating'))
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['form'] = FeedbackForm()
-        return context
+    def post(self, response, slug):
+        form = self.get_form()
+        if form.is_valid():
+            radio = self.get_object()
+            Feedback.objects.get_or_create(**form.cleaned_data, radio=radio)
+            return redirect(self.success_url)
+
+        return self.form_invalid()
 
 
 class GanreListView(ListView):

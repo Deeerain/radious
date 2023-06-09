@@ -6,6 +6,23 @@ const favorite_buttons = document.querySelectorAll('#AddFavoriteButton')
 const rp = new Player(document.querySelector('#RadioPlayer'))
     .init()
 
+const feedback_form = document.querySelector("#feedbackForm");
+
+feedback_form.addEventListener("submit", (ev) => {
+    ev.preventDefault()
+    
+    const form_data = new FormData(ev.target)
+
+    fetch(form_data.get("action"), {
+        method: form_data.get('method'),
+        body: form_data
+    }).then(response => {
+        console.log(response)
+    }).catch(reason => {
+        console.error(reason)
+    })
+})
+
 for (let toggler of togglers) {
     toggler.addEventListener('click', (e) => {
         const toggle_target_query = e.target.getAttribute('data-target')

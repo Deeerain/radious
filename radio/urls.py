@@ -15,5 +15,5 @@ urlpatterns = [
     path('ganre/<slug:slug>/', views.RadioListByGanre.as_view(),
          name='ganre-detail'),
     path('favorite/', views.RadioListByFavorite.as_view(),
-         name='favorite-list')
+         name='favorite-list'),
 ]
