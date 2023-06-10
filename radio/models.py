@@ -1,6 +1,5 @@
 from pytils.translit import slugify
 
-from typing import Iterable
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -15,6 +14,12 @@ class Ganre(models.Model):
     class Meta:
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
