@@ -20,10 +20,11 @@
             <h2 class="logo"><a href="/">RADIOUS</a></h2>
             {% block sidebar_content %}
     
-            <form id="SearchBox">
-                <input type="text" name="search" form="SearchForm" formaction="submit" id="SearchInput" {% if request.GET.search %} value="{{ request.GET.search }}" {% endif %}>
+            <form id="SearchBox" method="get">
+                <input type="text" name="search" id="SearchInput">
                 <input type="submit" class="material-symbols-outlined" value="search" />
             </form>
+            
             <ul class="nav">
                 <li class="nav-item"><a href="{% url 'radio:radio-list' %}">Радио</a></li>
                 <li class="nav-item"><a href="{% url 'radio:ganre-list' %}">Жанры</a></li>
