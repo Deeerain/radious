@@ -1,3 +1,6 @@
+from pytils.translit import slugify
+
+from typing import Iterable
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -35,6 +38,13 @@ class Radio(models.Model):
     class Meta:
         verbose_name = 'Радио'
         verbose_name_plural = 'Радио'
+
+    def save(self, *args, **kwargs) -> None:
+
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
