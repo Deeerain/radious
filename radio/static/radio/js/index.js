@@ -8,20 +8,22 @@ const rp = new Player(document.querySelector('#RadioPlayer'))
 
 const feedback_form = document.querySelector("#feedbackForm");
 
-feedback_form.addEventListener("submit", (ev) => {
-    ev.preventDefault()
+// feedback_form.addEventListener("submit", (ev) => {
+//     ev.preventDefault()
     
-    const form_data = new FormData(ev.target)
+//     const form_data = new FormData(ev.target)
+//     const form_action = ev.target.getAttribute("action")
+//     const form_method = ev.target.getAttribute("method")
 
-    fetch(form_data.get("action"), {
-        method: form_data.get('method'),
-        body: form_data
-    }).then(response => {
-        console.log(response)
-    }).catch(reason => {
-        console.error(reason)
-    })
-})
+//     fetch(form_action, {
+//         method: form_method,
+//         body: form_data
+//     }).then(response => {
+//         console.log(response)
+//     }).catch(reason => {
+//         console.error(reason)
+//     })
+// })
 
 for (let toggler of togglers) {
     toggler.addEventListener('click', (e) => {

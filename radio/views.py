@@ -90,7 +90,7 @@ class RadioDetailView(DetailView, ModelFormMixin):
         if form.is_valid():
             radio = self.get_object()
             Feedback.objects.get_or_create(**form.cleaned_data, radio=radio)
-            return redirect(self.success_url)
+            return redirect(self.request.headers.get("Referer"))
 
         return self.form_invalid()
 

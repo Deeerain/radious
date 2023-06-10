@@ -34,7 +34,7 @@
     <div id="NewFeedbackPopup" class="popup hidden">
         <div class="popup__content">
             <button class="toggler material-symbols-outlined" data-target="#NewFeedbackPopup" data-class-name="hidden">close</button>
-            <form id="feedbackForm" method="post">
+            <form id="feedbackForm" method="post" action="">
                 {% csrf_token %}
                 {{ form }}
                 <input type="submit" value="Отправить">
