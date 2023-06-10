@@ -1,3 +1,0 @@
-- repo: "https://github.com/Deeerain/radious"
-  hooks:
-    - id: flake8
