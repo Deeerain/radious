@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: radious-app
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - ./.prod.env
+    environment:
+      - DATABASE=postgres
+    expose:
+      - 8000
+    depends_on:
+      - db
+    volumes:
+      - staticfiles:/home/app/web/static/
+      - mediafiles:/home/app/web/media/
+
+  nginx:
+    container_name: proxy
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - 80:80
+    volumes:
+      - staticfiles:/home/app/web/static/
+      - mediafiles:/home/app/web/media/
+
+  db:
+    image: postgres:latest
+    container_name: radious-db
+    env_file:
+      - ./.postgres.prod.env
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgresdata:
+  staticfiles:
+  mediafiles:
