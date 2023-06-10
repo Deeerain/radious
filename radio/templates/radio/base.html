@@ -9,6 +9,7 @@
     <title>{% block title %}Radio{% endblock %}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link rel="stylesheet" href="{% static 'radio/css/style.css' %}">
     {% block extrastyle %}
     {% endblock %}
@@ -19,12 +20,12 @@
         <aside>
             <h2 class="logo"><a href="/">RADIOUS</a></h2>
             {% block sidebar_content %}
-    
+
             <form id="SearchBox" method="get">
                 <input type="text" name="search" id="SearchInput">
                 <input type="submit" class="material-symbols-outlined" value="search" />
             </form>
-            
+
             <ul class="nav">
                 <li class="nav-item"><a href="{% url 'radio:radio-list' %}">Радио</a></li>
                 <li class="nav-item"><a href="{% url 'radio:ganre-list' %}">Жанры</a></li>
@@ -44,12 +45,12 @@
             </main>
             {% block footer %}
             <footer>
-    
+
             </footer>
             {% endblock %}
         </div>
-    
-        
+
+
         {% load static %}
         <script src="{% static 'radio/js/index.js' %}" type="module"></script>
         {% block extrascript %}
