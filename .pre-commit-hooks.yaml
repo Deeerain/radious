@@ -1,0 +1,5 @@
+- id: flake9
+  name: flake8
+  description: Запуск линтера
+  types: [python]
+  entry: flake8
