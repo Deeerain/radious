@@ -6,7 +6,30 @@ from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
-class Ganre(models.Model):
+class SlugifyMixin:
+    slug_field_name: str = 'slug'
+    slug_from_field_name: str = 'name'
+
+    def generate_slug(*args) -> str:
+        return slugify(str.join(*args))
+
+    def save(self, *args, **kwargs) -> None:
+        if not hasattr(self, self.slug_field_name)\
+                and hasattr(self.slug_from_field_name):
+            return super().save(*args, **kwargs)
+
+        if not getattr(self, self.slug_field_name):
+
+            slug_from_value = getattr(self, self.slug_from_field_name)
+
+            slug = self.generate_slug(slug_from_value)
+
+            setattr(self, self.slug_field_name, slug)
+
+        return super().save(*args, **kwargs)
+
+
+class Ganre(SlugifyMixin, models.Model):
     name = models.CharField('Название', max_length=100, unique=True,
                             db_index=True)
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
@@ -15,12 +38,6 @@ class Ganre(models.Model):
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
-    def save(self, *args, **kwargs) -> None:
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        return super().save(*args, **kwargs)
-
     def __str__(self) -> str:
         return self.name
 
@@ -28,7 +45,7 @@ class Ganre(models.Model):
         return reverse('radio:ganre-detail', kwargs={'slug': self.slug})
 
 
-class Radio(models.Model):
+class Radio(SlugifyMixin, models.Model):
     name = models.CharField('Название', max_length=255, db_index=True)
     stream_url = models.URLField('Url потока', db_index=True, unique=True)
     ganre = models.ManyToManyField(verbose_name='Жанр', to=Ganre, blank=True)
@@ -43,13 +60,6 @@ class Radio(models.Model):
     class Meta:
         verbose_name = 'Радио'
         verbose_name_plural = 'Радио'
-
-    def save(self, *args, **kwargs) -> None:
-
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.name
@@ -78,3 +88,8 @@ class Feedback(models.Model):
 
     def __str__(self) -> str:
         return self.username
+
+
+GanreQuerySet = models.QuerySet[Ganre]
+RadioQuerySet = models.QuerySet[Radio]
+FeedbackQuerySet = models.QuerySet[Feedback]
