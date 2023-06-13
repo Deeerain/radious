@@ -4,7 +4,10 @@ from django.db.models.query import QuerySet
 from django.db.models import Q, Avg
 from django.http import HttpResponse
 from django.views.generic.edit import ModelFormMixin
+from django.views import View
 from django.views.generic import ListView, DetailView
+from django.views.decorators import csrf
+from django.utils.decorators import method_decorator
 
 from radio.models import Radio, Ganre, Feedback
 from radio.forms import FeedbackForm
@@ -60,14 +63,30 @@ class RadioListByGanre(ListView):
 
 class RadioListByFavorite(RadioListView):
     def get_queryset(self) -> QuerySet[Any]:
-        favorites = self.request.session.get('favorites')
-
-        print(self.request.session.keys())
-
-        if not favorites:
-            return super().get_queryset().none()
+        favorites = self.request.session.get('stations_favorite', [])
 
         return super().get_queryset().filter(pk__in=favorites)
+
+
+@method_decorator(csrf.csrf_exempt, 'dispatch')
+class AddStationToFavoriteView(View):
+    def post(self, request, slug):
+        try:
+            station = Radio.objects.get(slug=slug)
+
+            session_favorites = request.session\
+                .get('stations_favorite', [])
+
+            if station.pk not in session_favorites:
+                session_favorites.append(station.pk)
+                request.session.setdefault('stations_favorite',
+                                           session_favorites)
+
+            request.session.save()
+            return HttpResponse('', status=200)
+
+        except Radio.DoesNotExist:
+            return HttpResponse('', status=404)
 
 
 class RadioDetailView(DetailView, ModelFormMixin):
