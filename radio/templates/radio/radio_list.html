@@ -1,21 +1,25 @@
 {% extends 'radio/base.html' %}
 
+{% block subtitle %}Список станций{% endblock %}
+
+{% block content_header %}
+<h1 class="content_header__heading">Онлайн радио</h1>
+<p class="content_header__description">Слушайте радио онлайн в хорошем качестве, онлайн и без регистрации</p>
+{% endblock %}
+
+
 {% block content %}
-<div>
-    <h1>Онлайн радио</h1>
-    <p>Слушайте радио онлайн в хорошем качестве, онлайн и без редистрации</p>
-    <div class="list">
-        {% for item in object_list %}
-        <div class="list-item radio-station">
+<div class="station_list">
+    {% for item in object_list %}
+    <div class="station_list__item radio-station">
 
-            {% load static %}
-            <img src="{{ item.preview.url }}" width="75" height="75">
+        {% load static %}
+        <img class="radio-station__img" src="{{ item.preview.url }}" width="75" height="75">
 
-            <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+        <h3 class="radio-station__naming"><a class="link" href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
 
-            <button id="AddFavoriteButton" class="material-symbols-outlined" data-id="{{ item.slug }}"s>favorite</button>
-        </div>
-        {% endfor %}
+        <button id="AddFavoriteButton" class="button material-symbols-outlined" data-id="{{ item.slug }}"s>favorite</button>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}

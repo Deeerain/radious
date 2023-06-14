@@ -1,11 +1,9 @@
-<div class="list">
-    <h2>{{ list_title }}</h2>
-    <div class="list list-horizontal">
-        {% for item in object_list %}
-        <div class="list-item radio-station-block">
-            <img src="{{ item.preview.url }}" width="100" height="100">
-            <a href="{% url 'radio:radio-detail' slug=item.slug %}">{{ item.name }}</a>
-        </div>
-        {% endfor %}
+<h2 class="assembly__naming">{{ list_title }}</h2>
+<div class="station_list station_list--horizontal">
+    {% for item in object_list %}
+    <div class="station_list__item station_list__item--vertical radio-station">
+        <img class="radio-station__img" src="{{ item.preview.url }}" width="100" height="100">
+        <h4 class="radio-station__naming"><a class="link" href="{% url 'radio:radio-detail' slug=item.slug %}">{{ item.name }}</a></h4>
     </div>
+    {% endfor %}
 </div>

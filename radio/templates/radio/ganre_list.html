@@ -1,8 +1,13 @@
 {% extends 'radio/base.html' %}
 
+{% block subtitle %}Поиск по жанру{% endblock %}
+
+{% block content_header %}
+<h1 class="content_header__heading">Поиск радиостанций по жанру</h1>
+<p class="content_header__description">Слушайте радио онлайн в хорошем качестве, онлайн и без регистрации</p>
+{% endblock %}
 
 {% block content %}
-<h1>Поиск радиостанций по жанру</h1>
 <div class="ganre-list">
     {% for item in object_list %}
     <div class="ganre-list__item">
