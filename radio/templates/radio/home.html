@@ -1,14 +1,18 @@
 {% extends 'radio/base.html' %}
 
 
+{% block content_header %}
+<h1 class="content_header__heading">Слушать радио онлайн</h1>
+{% endblock %}
+
 {% block content %}
 {% load radio %}
-<div class="list">
-    <div class="list-item list list-horizontal">
+<div class="station_assembly_list">
+    <div class="station_assembly_list__item assembly">
         {% include 'radio/inc_radio_list.html' with list_title='Новинки' object_list=object_list|newest %}
     </div>
 
-    <div class="list-item list list-horizontal">
+    <div class="station_assembly_list__item assembly">
         {% include 'radio/inc_radio_list.html' with list_title='Популярные радиостанции' object_list=object_list|popular:10 %}
     </div>
 </div>

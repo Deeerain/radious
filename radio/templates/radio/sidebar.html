@@ -1,0 +1,21 @@
+<aside class="sidebar">
+    <div class="branding">
+        <h2 class="branding__logo"><a class="link" href="/">RADIOUS</a></h2>
+    </div>
+    {% block sidebar_content %}
+
+    <form class="form search_form" id="SearchBox" method="get">
+        <input class="input search_form__input" type="text" name="search" id="SearchInput">
+        <input class="input material-symbols-outlined" type="submit" value="search" />
+    </form>
+
+    <nav class="nav">
+        {% url 'radio:radio-list' as radio_list_url %}
+        <div class="nav__item {% if radio_list_url == request.path %} nav__item--active {% endif %}"><a class="link" href="{{ radio_list_url }}">Радио</a></div>
+        {% url 'radio:ganre-list' as ganre_list_url %}
+        <div class="nav__item {% if ganre_list_url == request.path %} nav__item--active {% endif %}"><a class="link" href="{{ ganre_list_url }}">Жанры</a></div>
+        {% url 'radio:favorite-list' as favorite_list_url %}
+        <div class="nav__item {% if favorite_list_url == request.path %} nav__item--active {% endif %}"><a class="link" href="{{ favorite_list_url }}">Избранное</a></div>
+    </nav>
+    {% endblock %}
+</aside>
