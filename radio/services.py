@@ -7,8 +7,8 @@ from radio import models as app_models
 def stations_all(queryset: app_models.FeedbackQuerySet = None,
                  visible=True, **kwargs):
     '''Получает список станций и фильтрует по видимости'''
-    queryset = queryset if not None else models.QuerySet(
-        model=app_models.Radio)
+    if queryset is None:
+        queryset = models.QuerySet(app_models.Radio)
 
     return queryset\
         .prefetch_related('feedbacks')\
